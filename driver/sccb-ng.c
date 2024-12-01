@@ -242,7 +242,9 @@ uint8_t SCCB_Read(uint8_t slv_addr, uint8_t reg)
 
     tx_buffer[0] = reg;
 
-    esp_err_t ret = i2c_master_transmit_receive(dev_handle, tx_buffer, 1, rx_buffer, 1, TIMEOUT_MS);
+    /*esp_err_t ret = i2c_master_transmit_receive(dev_handle, tx_buffer, 1, rx_buffer, 1, TIMEOUT_MS);*/
+    i2c_master_transmit(dev_handle, tx_buffer, 1, -1);
+    esp_err_t ret = i2c_master_receive(dev_handle, rx_buffer, 1, -1);
 
     if (ret != ESP_OK)
     {
@@ -279,7 +281,9 @@ uint8_t SCCB_Read16(uint8_t slv_addr, uint16_t reg)
     uint16_t reg_htons = LITTLETOBIG(reg);
     uint8_t *reg_u8 = (uint8_t *)&reg_htons;
 
-    esp_err_t ret = i2c_master_transmit_receive(dev_handle, reg_u8, 2, rx_buffer, 1, TIMEOUT_MS);
+    /*esp_err_t ret = i2c_master_transmit_receive(dev_handle, reg_u8, 2, rx_buffer, 1, TIMEOUT_MS);*/
+    i2c_master_transmit(dev_handle, reg_u8, 2, -1);
+    esp_err_t ret = i2c_master_receive(dev_handle, rx_buffer, 1, -1);
 
     if (ret != ESP_OK)
     {
@@ -316,7 +320,9 @@ uint16_t SCCB_Read_Addr16_Val16(uint8_t slv_addr, uint16_t reg)
     uint16_t reg_htons = LITTLETOBIG(reg);
     uint8_t *reg_u8 = (uint8_t *)&reg_htons;
 
-    esp_err_t ret = i2c_master_transmit_receive(dev_handle, reg_u8, 2, rx_buffer, 2, TIMEOUT_MS);
+    /*esp_err_t ret = i2c_master_transmit_receive(dev_handle, reg_u8, 2, rx_buffer, 2, TIMEOUT_MS);*/
+    i2c_master_transmit(dev_handle, reg_u8, 2, -1);
+    esp_err_t ret = i2c_master_receive(dev_handle, rx_buffer, 2, -1);
     uint16_t data = ((uint16_t)rx_buffer[0] << 8) | (uint16_t)rx_buffer[1];
 
     if (ret != ESP_OK)
